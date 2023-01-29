@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import PopupContext from '../../context/PopupContext';
 import { News } from './types';
 
 type NewsProp = {
@@ -5,6 +7,8 @@ type NewsProp = {
 };
 
 export function NewsCard({ news }: NewsProp) {
+  const { handleShowPopup } = useContext(PopupContext);
+
   return (
     <div className="col-4">
       <div className="card h-100">
@@ -14,6 +18,7 @@ export function NewsCard({ news }: NewsProp) {
             <img
               height={200}
               width={350}
+              onClick={() => handleShowPopup(news.image.url)}
               className="rounded"
               src={news.image.thumbnail}
               style={{ objectFit: 'cover' }}
