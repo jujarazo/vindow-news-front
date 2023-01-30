@@ -1,11 +1,10 @@
+import { useContext } from 'react';
+import NewsContext from '../../context/NewsContext';
 import { NewsCard } from './NewsCard';
-import { News } from './types';
 
-export type NewsContainerProps = {
-  newsList: News[];
-};
+export function NewsContainer() {
+  const { newsList } = useContext(NewsContext);
 
-export function NewsContainer({ newsList }: NewsContainerProps) {
   return (
     <div className="container">
       <div className="row g-4 mb-3">

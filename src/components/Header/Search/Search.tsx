@@ -1,17 +1,18 @@
 import { Field, Form, Formik } from 'formik';
+import { useContext } from 'react';
+import NewsContext from '../../../context/NewsContext';
 import { Spinner } from '../../Commons';
 
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
 export function Search() {
+  const { handleSearchNews, currentPage } = useContext(NewsContext);
+
   return (
     <Formik
       initialValues={{
         searchTerm: '',
       }}
       onSubmit={async (values) => {
-        await sleep(500);
-        console.log(values);
+        await handleSearchNews(values.searchTerm, currentPage);
       }}
     >
       {({ isSubmitting }) => (
