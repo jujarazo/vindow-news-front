@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import PopupContext from '../../context/PopupContext';
+import PopupContext from '../../../context/PopupContext';
 
 export function Popup() {
   const { showPopup, handleClosePopup, imgUrl } = useContext(PopupContext);
