@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import PopupContext from '../../context/PopupContext';
+import { truncate } from '../../helpers';
 import { News } from './types';
 
 type NewsProp = {
@@ -8,6 +9,8 @@ type NewsProp = {
 
 export function NewsCard({ news }: NewsProp) {
   const { handleShowPopup } = useContext(PopupContext);
+
+  const truncatedDescription = truncate(news.description, 20);
 
   return (
     <div className="col-4">
@@ -24,7 +27,7 @@ export function NewsCard({ news }: NewsProp) {
               style={{ objectFit: 'cover' }}
             />
           </div>
-          <p className="card-text mt-2">{news.description}</p>
+          <p className="card-text mt-2">{truncatedDescription}</p>
         </div>
         <div className="d-flex justify-content-end w-100 p-3">
           <a href={news.url} target="_blank">
