@@ -5,6 +5,7 @@ import { results } from '../dummy';
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export type NewsContextType = {
+  isLoadingNews: boolean;
   newsList: News[];
   currentPage: number;
   currentSearchTerm: string;
@@ -14,13 +15,17 @@ export type NewsContextType = {
 const NewsContext = createContext<NewsContextType>({} as NewsContextType);
 
 export function NewsProvider({ children }: { children: JSX.Element }) {
+  const [isLoadingNews, setIsLoadingNews] = useState(false);
   const [newsList, setNewsList] = useState(results.value);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
 
   const handleSearchNews = async (searchTerm: string, page: number) => {
+    setIsLoadingNews(true);
+
     if (currentPage !== page) setCurrentPage(page);
     if (currentSearchTerm !== searchTerm) setCurrentSearchTerm(searchTerm);
+
     try {
       // Call API
       await sleep(600);
@@ -28,12 +33,20 @@ export function NewsProvider({ children }: { children: JSX.Element }) {
       setNewsList(results.value);
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoadingNews(false);
     }
   };
 
   return (
     <NewsContext.Provider
-      value={{ newsList, currentPage, currentSearchTerm, handleSearchNews }}
+      value={{
+        isLoadingNews,
+        newsList,
+        currentPage,
+        currentSearchTerm,
+        handleSearchNews,
+      }}
     >
       {children}
     </NewsContext.Provider>

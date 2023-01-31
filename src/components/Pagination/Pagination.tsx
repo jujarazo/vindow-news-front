@@ -6,7 +6,7 @@ import { Item } from './Item';
 const paginationLength = 5;
 
 export function Pagination() {
-  const { currentPage, currentSearchTerm, handleSearchNews } =
+  const { isLoadingNews, currentPage, currentSearchTerm, handleSearchNews } =
     useContext(NewsContext);
 
   // Create an array for the first 5 pages
@@ -45,7 +45,7 @@ export function Pagination() {
           <Item
             content="&laquo;"
             aria-label="PreviousBatch"
-            disabled={isFirstPageBatch}
+            disabled={isFirstPageBatch || isLoadingNews}
             handleClick={() => goToPage(pages[0] - 1)}
           />
           {pages.map((page) => (
@@ -54,11 +54,13 @@ export function Pagination() {
               content={page}
               active={currentPage === page}
               handleClick={() => goToPage(page)}
+              disabled={isLoadingNews}
             />
           ))}
           <Item
             content="&raquo;"
             aria-label="NextBatch"
+            disabled={isLoadingNews}
             handleClick={() => goToPage(pages[0] + paginationLength)}
           />
         </ul>

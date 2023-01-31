@@ -10,13 +10,15 @@ type NewsProp = {
 export function NewsCard({ news }: NewsProp) {
   const { handleShowPopup } = useContext(PopupContext);
 
+  const truncatedTitle = truncate(news.title, 10);
+
   const truncatedDescription = truncate(news.description, 20);
 
   return (
     <div className="col-4">
       <div className="card h-100">
         <div className="card-body">
-          <h5 className="card-title">{news.title}</h5>
+          <h5 className="card-title">{truncatedTitle}</h5>
           <div className="card-image">
             <img
               height={200}
