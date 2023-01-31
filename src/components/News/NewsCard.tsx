@@ -19,7 +19,7 @@ export function NewsCard({ news }: NewsProp) {
       <div className="card h-100">
         <div className="card-body">
           <h5 className="card-title">{truncatedTitle}</h5>
-          <div className="card-image">
+          <div className="card-image" role="button">
             <img
               height={200}
               width={350}
