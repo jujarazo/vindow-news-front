@@ -1,18 +1,29 @@
 type ItemProps = {
-  content: string;
+  content: number | string;
   label?: string;
   disabled?: boolean;
   active?: boolean;
+  handleClick: () => void;
 };
 
-export function Item({ content, label, disabled, active }: ItemProps) {
+export function Item({
+  content,
+  label,
+  disabled,
+  active,
+  handleClick,
+}: ItemProps) {
   return (
     <li
       className={`page-item ${disabled ? 'disabled' : ''} ${
         active ? 'active' : ''
       }`}
     >
-      <button className="page-link" aria-label={label || 'page-number'}>
+      <button
+        onClick={handleClick}
+        className="page-link"
+        aria-label={label || 'page-number'}
+      >
         {content}
       </button>
     </li>

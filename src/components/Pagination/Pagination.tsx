@@ -1,11 +1,42 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import NewsContext from '../../context/NewsContext';
+import { createPaginationArray } from '../../helpers';
 import { Item } from './Item';
 
-export function Pagination() {
-  const { currentPage, handleSearchNews } = useContext(NewsContext);
+const paginationLength = 5;
 
-  const isFirstPage = currentPage === 1;
+export function Pagination() {
+  const { currentPage, currentSearchTerm, handleSearchNews } =
+    useContext(NewsContext);
+
+  // Create an array for the first 5 pages
+  const initialPages = createPaginationArray(1, paginationLength);
+  const [pages, setPages] = useState(initialPages);
+
+  const isFirstPageBatch = currentPage <= paginationLength;
+
+  useEffect(() => {
+    const lastVisiblePage = pages.slice(-1).pop();
+
+    // Check if it needs to go to the next batch of pages
+    if (lastVisiblePage && currentPage > lastVisiblePage) {
+      const nextBatch = createPaginationArray(currentPage, paginationLength);
+      setPages(nextBatch);
+    }
+
+    // Check if it needs to go to the previous batch of pages
+    if (currentPage < pages[0]) {
+      const previousBatch = createPaginationArray(
+        pages[0] - paginationLength,
+        paginationLength
+      );
+      setPages(previousBatch);
+    }
+  }, [currentPage]);
+
+  const goToPage = (page: number) => {
+    handleSearchNews(currentSearchTerm, page);
+  };
 
   return (
     <div className="d-flex justify-content-center w-100">
@@ -13,13 +44,23 @@ export function Pagination() {
         <ul className="pagination">
           <Item
             content="&laquo;"
-            aria-label="Previous"
-            disabled={isFirstPage}
+            aria-label="PreviousBatch"
+            disabled={isFirstPageBatch}
+            handleClick={() => goToPage(pages[0] - 1)}
           />
-          <Item content="1" active={currentPage === 1} />
-          <Item content="2" active={currentPage === 2} />
-          <Item content="3" active={currentPage === 3} />
-          <Item content="&raquo;" aria-label="Next" />
+          {pages.map((page) => (
+            <Item
+              key={page}
+              content={page}
+              active={currentPage === page}
+              handleClick={() => goToPage(page)}
+            />
+          ))}
+          <Item
+            content="&raquo;"
+            aria-label="NextBatch"
+            handleClick={() => goToPage(pages[0] + paginationLength)}
+          />
         </ul>
       </nav>
     </div>
