@@ -1,8 +1,14 @@
+import { AxiosError } from 'axios';
 import { createContext, useState } from 'react';
 import { News } from '../components';
 import { results } from '../dummy';
+import { get } from '../service/http';
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+const newsSearchUrl = '/api/search/NewsSearchAPI';
+
+const pageSize = 10;
 
 export type NewsContextType = {
   isLoadingNews: boolean;
@@ -21,7 +27,7 @@ export function NewsProvider({ children }: { children: JSX.Element }) {
   const [newsList, setNewsList] = useState(results.value);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
-  const [showErrorAlert, setShowErrorAlert] = useState(true);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState(
     'There seems to be an error'
   );
@@ -34,11 +40,22 @@ export function NewsProvider({ children }: { children: JSX.Element }) {
 
     try {
       // Call API
-      await sleep(600);
+      const params = {
+        // q: searchTerm,
+        withThumbnails: true,
+        pageNumber: page,
+        pageSize,
+      };
+      const resNewsList = await get(newsSearchUrl, params);
+      // await sleep(600);
       console.log(searchTerm, page);
+      console.log(resNewsList);
       setNewsList(results.value);
     } catch (error) {
+      const errorMessage = error as AxiosError;
       console.error(error);
+      setShowErrorAlert(true);
+      setErrorMessage(errorMessage.message);
     } finally {
       setIsLoadingNews(false);
     }

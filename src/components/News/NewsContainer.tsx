@@ -1,9 +1,14 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import NewsContext from '../../context/NewsContext';
 import { NewsCard } from './NewsCard';
 
 export function NewsContainer() {
-  const { newsList } = useContext(NewsContext);
+  const { newsList, handleSearchNews, currentPage, currentSearchTerm } =
+    useContext(NewsContext);
+
+  useEffect(() => {
+    handleSearchNews(currentSearchTerm, currentPage);
+  }, []);
 
   return (
     <div className="container">

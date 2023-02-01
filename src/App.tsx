@@ -5,7 +5,6 @@ import { useContext } from 'react';
 import NewsContext from './context/NewsContext';
 
 function App() {
-  console.log(results);
   const { showErrorAlert } = useContext(NewsContext);
 
   return (
