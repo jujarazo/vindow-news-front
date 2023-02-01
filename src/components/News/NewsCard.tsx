@@ -15,18 +15,15 @@ export function NewsCard({ news }: NewsProp) {
   const truncatedDescription = truncate(news.description, 20);
 
   return (
-    <div className="col-4">
+    <div className="col-lg-4 col-md-6 col-sm-12">
       <div className="card h-100">
         <div className="card-body">
           <h5 className="card-title">{truncatedTitle}</h5>
-          <div className="card-image" role="button">
+          <div className="image" role="button">
             <img
-              height={200}
-              width={350}
               onClick={() => handleShowPopup(news.image.url)}
-              className="rounded"
+              className="rounded cover"
               src={news.image.thumbnail}
-              style={{ objectFit: 'cover' }}
             />
           </div>
           <p className="card-text mt-2">{truncatedDescription}</p>
