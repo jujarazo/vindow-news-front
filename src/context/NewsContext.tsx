@@ -9,6 +9,8 @@ export type NewsContextType = {
   newsList: News[];
   currentPage: number;
   currentSearchTerm: string;
+  showErrorAlert: boolean;
+  errorMessage: string;
   handleSearchNews: (searchTerm: string, page: number) => void;
 };
 
@@ -19,6 +21,10 @@ export function NewsProvider({ children }: { children: JSX.Element }) {
   const [newsList, setNewsList] = useState(results.value);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
+  const [showErrorAlert, setShowErrorAlert] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(
+    'There seems to be an error'
+  );
 
   const handleSearchNews = async (searchTerm: string, page: number) => {
     setIsLoadingNews(true);
@@ -45,6 +51,8 @@ export function NewsProvider({ children }: { children: JSX.Element }) {
         newsList,
         currentPage,
         currentSearchTerm,
+        showErrorAlert,
+        errorMessage,
         handleSearchNews,
       }}
     >

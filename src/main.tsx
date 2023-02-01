@@ -6,9 +6,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import App from './App';
 import './index.css';
+import { NewsProvider, PopupProvider } from './context';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <App />
+    <PopupProvider>
+      <NewsProvider>
+        <App />
+      </NewsProvider>
+    </PopupProvider>
   </React.StrictMode>
 );
