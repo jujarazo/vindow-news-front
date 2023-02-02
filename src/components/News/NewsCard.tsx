@@ -13,10 +13,7 @@ export function NewsCard({ news }: NewsProp) {
 
   const truncatedTitle = truncate(news.title, truncateTitleAt);
 
-  const truncatedDescription = truncate(
-    news.description,
-    truncateDescriptionAt
-  );
+  const truncatedDescription = truncate(news.body, truncateDescriptionAt);
 
   return (
     <div className="col-lg-4 col-md-6 col-sm-12">

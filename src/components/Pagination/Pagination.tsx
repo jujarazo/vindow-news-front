@@ -22,7 +22,7 @@ export function Pagination() {
 
   const isFirstPageBatch = currentPage <= paginationLength;
 
-  const isLastPage = currentPage === totalPages;
+  const isLastPageBatch = currentPage + paginationLength >= totalPages;
 
   useEffect(() => {
     const lastVisiblePage = pages.slice(-1).pop();
@@ -77,7 +77,7 @@ export function Pagination() {
           <Item
             content="&raquo;"
             aria-label="NextBatch"
-            disabled={isLastPage || isLoadingNews}
+            disabled={isLastPageBatch || isLoadingNews}
             handleClick={() => goToPage(pages[0] + paginationLength)}
           />
         </ul>
