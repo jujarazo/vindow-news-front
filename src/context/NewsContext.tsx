@@ -42,8 +42,9 @@ export function NewsProvider({ children }: { children: JSX.Element }) {
         pageSize,
       };
       const resNewsList = await get(newsSearchUrl, params);
-      const resTotalCountPages =
-        Math.floor(resNewsList.data.totalCount / pageSize) + 1;
+      const resTotalCountPages = Math.ceil(
+        resNewsList.data.totalCount / pageSize
+      );
 
       if (totalPages !== resTotalCountPages) setTotalPages(resTotalCountPages);
       setNewsList(resNewsList.data.value);
