@@ -1,4 +1,4 @@
-> Vindow News search front end
+# Vindow News search front end
 
 ## Getting started
 
