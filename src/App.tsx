@@ -1,6 +1,5 @@
 import { Alert, Header, NewsContainer, Pagination, Popup } from './components';
 import './App.css';
-import { results } from './dummy';
 import { useContext } from 'react';
 import NewsContext from './context/NewsContext';
 
