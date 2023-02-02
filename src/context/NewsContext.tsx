@@ -1,17 +1,15 @@
 import { AxiosError } from 'axios';
 import { createContext, useState } from 'react';
 import { News } from '../components';
-import { results } from '../dummy';
+import { newsSearchUrl, pageSize } from '../constants';
+import { handleErrorMessage } from '../helpers';
 import { get } from '../service/http';
-
-const newsSearchUrl = '/api/search/NewsSearchAPI';
-
-const pageSize = 6;
 
 export type NewsContextType = {
   isLoadingNews: boolean;
   newsList: News[];
   currentPage: number;
+  totalPages: number;
   currentSearchTerm: string;
   showErrorAlert: boolean;
   errorMessage: string;
@@ -22,13 +20,12 @@ const NewsContext = createContext<NewsContextType>({} as NewsContextType);
 
 export function NewsProvider({ children }: { children: JSX.Element }) {
   const [isLoadingNews, setIsLoadingNews] = useState(false);
-  const [newsList, setNewsList] = useState(results.value);
+  const [newsList, setNewsList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
   const [showErrorAlert, setShowErrorAlert] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(
-    'There seems to be an error'
-  );
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSearchNews = async (searchTerm: string, page: number) => {
     setIsLoadingNews(true);
@@ -45,12 +42,18 @@ export function NewsProvider({ children }: { children: JSX.Element }) {
         pageSize,
       };
       const resNewsList = await get(newsSearchUrl, params);
+      const resTotalCountPages =
+        Math.floor(resNewsList.data.totalCount / pageSize) + 1;
+      console.log(resTotalCountPages);
+      if (totalPages !== resTotalCountPages) setTotalPages(resTotalCountPages);
       setNewsList(resNewsList.data.value);
     } catch (error) {
-      const errorMessage = error as AxiosError;
+      const axiosError = error as AxiosError;
       console.error(error);
+
+      const errorMessage = handleErrorMessage(axiosError.response?.status);
       setShowErrorAlert(true);
-      setErrorMessage(errorMessage.message);
+      setErrorMessage(errorMessage);
     } finally {
       setIsLoadingNews(false);
     }
@@ -62,6 +65,7 @@ export function NewsProvider({ children }: { children: JSX.Element }) {
         isLoadingNews,
         newsList,
         currentPage,
+        totalPages,
         currentSearchTerm,
         showErrorAlert,
         errorMessage,

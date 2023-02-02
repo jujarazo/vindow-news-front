@@ -17,7 +17,7 @@ export function Popup() {
               type="button"
               className="btn-close"
               onClick={handleClosePopup}
-            ></button>
+            />
           </div>
           <div className="modal-body d-flex justify-content-center">
             <img src={imgUrl} className="img-fluid" />

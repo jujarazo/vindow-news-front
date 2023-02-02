@@ -9,3 +9,12 @@ export function truncate(text: string, amount: number) {
 export function createPaginationArray(startNumber: number, length: number) {
   return Array.from({ length }, (_, i) => startNumber + i);
 }
+// Handles the error messages depending on the response status code
+export function handleErrorMessage(status: number | undefined) {
+  switch (status) {
+    case 500:
+      return 'There was an error on the server, please try again later.';
+    default:
+      return 'There seems to be an error, please try again later';
+  }
+}

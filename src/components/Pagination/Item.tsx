@@ -20,6 +20,7 @@ export function Item({
       }`}
     >
       <button
+        disabled={disabled || active}
         onClick={handleClick}
         className="page-link"
         aria-label={label || 'page-number'}

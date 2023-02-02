@@ -15,7 +15,7 @@ export function Alert() {
         className="btn-close"
         data-bs-dismiss="alert"
         aria-label="Close"
-      ></button>
+      />
     </div>
   );
 }

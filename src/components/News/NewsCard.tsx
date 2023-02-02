@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { truncateDescriptionAt, truncateTitleAt } from '../../constants';
 import PopupContext from '../../context/PopupContext';
 import { truncate } from '../../helpers';
 import { News } from './types';
@@ -10,9 +11,12 @@ type NewsProp = {
 export function NewsCard({ news }: NewsProp) {
   const { handleShowPopup } = useContext(PopupContext);
 
-  const truncatedTitle = truncate(news.title, 10);
+  const truncatedTitle = truncate(news.title, truncateTitleAt);
 
-  const truncatedDescription = truncate(news.description, 20);
+  const truncatedDescription = truncate(
+    news.description,
+    truncateDescriptionAt
+  );
 
   return (
     <div className="col-lg-4 col-md-6 col-sm-12">
@@ -23,7 +27,11 @@ export function NewsCard({ news }: NewsProp) {
             <img
               onClick={() => handleShowPopup(news.image.url)}
               className="rounded cover"
-              src={news.image.thumbnail}
+              src={
+                news.image.thumbnail.length
+                  ? news.image.thumbnail
+                  : '/no-image-available.png'
+              }
             />
           </div>
           <p className="card-text mt-2">{truncatedDescription}</p>
