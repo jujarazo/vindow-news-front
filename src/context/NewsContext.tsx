@@ -4,11 +4,9 @@ import { News } from '../components';
 import { results } from '../dummy';
 import { get } from '../service/http';
 
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
 const newsSearchUrl = '/api/search/NewsSearchAPI';
 
-const pageSize = 10;
+const pageSize = 6;
 
 export type NewsContextType = {
   isLoadingNews: boolean;
@@ -39,18 +37,15 @@ export function NewsProvider({ children }: { children: JSX.Element }) {
     if (currentSearchTerm !== searchTerm) setCurrentSearchTerm(searchTerm);
 
     try {
-      // Call API
+      // Create the params for the Request
       const params = {
-        // q: searchTerm,
+        q: searchTerm || '',
         withThumbnails: true,
         pageNumber: page,
         pageSize,
       };
       const resNewsList = await get(newsSearchUrl, params);
-      // await sleep(600);
-      console.log(searchTerm, page);
-      console.log(resNewsList);
-      setNewsList(results.value);
+      setNewsList(resNewsList.data.value);
     } catch (error) {
       const errorMessage = error as AxiosError;
       console.error(error);
