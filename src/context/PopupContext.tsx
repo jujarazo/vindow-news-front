@@ -18,7 +18,10 @@ export function PopupProvider({ children }: { children: JSX.Element }) {
     setShowPopUp(true);
   };
 
-  const handleClosePopup = () => setShowPopUp(false);
+  const handleClosePopup = () => {
+    setShowPopUp(false);
+    setImageUrl('');
+  };
 
   return (
     <PopupContext.Provider
