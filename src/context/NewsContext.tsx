@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { createContext, useState } from 'react';
+import { createContext, useReducer, useState } from 'react';
 import { News } from '../components';
 import { newsSearchUrl, pageSize } from '../constants';
 import { handleErrorMessage } from '../helpers';
@@ -18,6 +18,28 @@ export type NewsContextType = {
 
 const NewsContext = createContext<NewsContextType>({} as NewsContextType);
 
+type NewsState = {
+  isLoadingNews: boolean;
+  // newsList: News[];
+  currentPage: number;
+  totalPages: number;
+  currentSearchTerm: string;
+  showErrorAlert: boolean;
+  errorMessage: string;
+};
+
+const initialState = {
+  isLoadingNews: false,
+  // newsList: [],
+  currentPage: 1,
+  totalPages: 1,
+  currentSearchTerm: '',
+  showErrorAlert: false,
+  errorMessage: '',
+};
+
+function newsReducer(state: NewsState) {}
+
 export function NewsProvider({ children }: { children: JSX.Element }) {
   const [isLoadingNews, setIsLoadingNews] = useState(false);
   const [newsList, setNewsList] = useState([]);
@@ -26,6 +48,8 @@ export function NewsProvider({ children }: { children: JSX.Element }) {
   const [currentSearchTerm, setCurrentSearchTerm] = useState('');
   const [showErrorAlert, setShowErrorAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const [state, dispatch] = useReducer(newsReducer, initialState);
 
   const handleSearchNews = async (searchTerm: string, page: number) => {
     setIsLoadingNews(true);
