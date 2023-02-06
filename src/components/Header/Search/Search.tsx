@@ -30,28 +30,30 @@ export function Search() {
       }}
       validate={searchValidation}
     >
-      <Form>
-        <div className="d-flex">
-          <Field
-            className="form-control"
+      {({ isValid }) => (
+        <Form>
+          <div className="d-flex">
+            <Field
+              className="form-control"
+              name="searchTerm"
+              placeholder="News search..."
+              type="text"
+            />
+            <button
+              type="submit"
+              className="btn btn-primary ms-3"
+              disabled={isLoadingNews || !isValid}
+            >
+              {isLoadingNews ? <Spinner /> : 'Search'}
+            </button>
+          </div>
+          <ErrorMessage
+            className="text-danger"
             name="searchTerm"
-            placeholder="News search..."
-            type="text"
+            component="div"
           />
-          <button
-            type="submit"
-            className="btn btn-primary ms-3"
-            disabled={isLoadingNews}
-          >
-            {isLoadingNews ? <Spinner /> : 'Search'}
-          </button>
-        </div>
-        <ErrorMessage
-          className="text-danger"
-          name="searchTerm"
-          component="div"
-        />
-      </Form>
+        </Form>
+      )}
     </Formik>
   );
 }
